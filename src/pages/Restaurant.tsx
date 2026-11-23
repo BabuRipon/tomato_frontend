@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import type { IRestaurantTypes } from '../types';
+import type { IRestaurantTypes, IMenuItemTypes } from '../types';
 import { config } from '../config/env'; 
 import AddRestaurant from '../components/AddRestaurant';
 import RestaurantProfile from '../components/RestaurantProfile';
+import MenuItems from '../components/MenuItems';
+import AddMenuItem from '../components/AddMenuItem';
+import { useApplicationData } from '../context/ApplicationDataContext';
 
 const Restaurant = () => {
     const [restaurant, setRestaurant] = useState<IRestaurantTypes | null>(null);
     const [loading, setLoading] = useState(true);
+    const [menuItems, setMenuItems] = useState<IMenuItemTypes[]>([]);
+    const {user} = useApplicationData();
     
     const tabs = [
       {key: 'menu', label: 'Menu'},
@@ -44,6 +49,27 @@ const Restaurant = () => {
       fetchMyRestaurant();
     },[])
 
+    const fetchMenuItems = async (restaurantId: string) => {
+      try{
+        const {data} = await axios.get(`${config.restaurantServiceUrl}/api/menuItem/all/${restaurantId}`,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        // console.log(data);
+        setMenuItems(data);
+      }
+      catch(err){
+        console.log('fetchingMenuItems :', err);
+      }
+    }
+
+    useEffect(()=>{
+      if(restaurant?._id){
+        fetchMenuItems(restaurant._id);
+      }
+    },[restaurant])
+
   if(loading){
     return (
       <div className='min-h-screen flex justify-center items-center'>
@@ -72,8 +98,8 @@ const Restaurant = () => {
           }
         </div>
         <div className='p-5'>
-          { activeTab===tabs[0].key && <div>Menu</div>}
-          { activeTab===tabs[1].key && <div>Add Items</div>}
+          { activeTab===tabs[0].key && <MenuItems menuItems={menuItems} isSeller={user?.role==='Seller'} onItemDeleted={() => fetchMenuItems(restaurant._id)}/>}
+          { activeTab===tabs[1].key && <AddMenuItem onItemAdded={() => fetchMenuItems(restaurant._id)}/>}
           { activeTab===tabs[2].key && <div>Sales</div>}
         </div>
       </div>

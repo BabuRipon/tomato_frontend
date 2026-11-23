@@ -53,6 +53,7 @@ const RestaurantProfile = ({restaurant, isSeller, setRestaurant}: PropsTypes) =>
             )
 
             setRestaurant(data.restaurant);
+            setEditMode(false);
             console.log(data.restaurant)
             toast.success(data.message);
         }
