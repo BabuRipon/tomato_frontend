@@ -17,6 +17,9 @@ const MenuItems = ({menuItems, isSeller, onItemDeleted}: propsType) => {
   const [loadingItemId, setLoadingItemId] = useState<string|null>(null)
   
   const handleDelete = async (itemId: string) => {
+    const confirm = window.confirm('Are you sure you want to delete item.')
+    if(confirm) return;
+
     try{
       const {data} = await axios.delete(`${config.restaurantServiceUrl}/api/menuItem/${itemId}`,{
         headers: {
@@ -28,14 +31,28 @@ const MenuItems = ({menuItems, isSeller, onItemDeleted}: propsType) => {
     }
     catch(err){
       console.log(err);
+      toast.error('Failed to delete item')
     }
   }
 
-  const toggleAvailibiity = async () => {
-    // todo
+  const toggleAvailibiity = async (itemId: string) => {
+    try{
+      const {data} = await axios.put(`${config.restaurantServiceUrl}/api/menuItem/status/${itemId}`,{},{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+
+      toast.success(data.message);
+      onItemDeleted();
+    }
+    catch(error){
+      console.log(error);
+      toast.error('failed to toggle visibility')
+    }
   }
   return(
-    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3'>
       {
         menuItems.map((item)=>{
           const isLoading = loadingItemId === item._id;
@@ -67,7 +84,7 @@ const MenuItems = ({menuItems, isSeller, onItemDeleted}: propsType) => {
                   <div className='flex gap-2'>
                     <button
                       className='cursor-pointer'
-                      onClick={()=>{}}
+                      onClick={()=>toggleAvailibiity(item._id)}
                     >
                       {
                         item.isAvailable ? 
