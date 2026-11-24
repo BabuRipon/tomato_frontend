@@ -18,7 +18,7 @@ const MenuItems = ({menuItems, isSeller, onItemDeleted}: propsType) => {
   
   const handleDelete = async (itemId: string) => {
     const confirm = window.confirm('Are you sure you want to delete item.')
-    if(confirm) return;
+    if(!confirm) return;
 
     try{
       const {data} = await axios.delete(`${config.restaurantServiceUrl}/api/menuItem/${itemId}`,{
@@ -52,14 +52,14 @@ const MenuItems = ({menuItems, isSeller, onItemDeleted}: propsType) => {
     }
   }
   return(
-    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
       {
         menuItems.map((item)=>{
           const isLoading = loadingItemId === item._id;
 
           return (
             <div className='relative flex gap-4 shadow-sm p-4 rounded-lg bg-white' key={item._id}>
-            <div className='relative'>
+            <div className='relative shrink-0'>
               <img
                 src={item.image}
                 className={`w-20 h-20 rounded object-cover ${!item.isAvailable ? 'grayscale brightness-50' : ''}`}
@@ -69,7 +69,7 @@ const MenuItems = ({menuItems, isSeller, onItemDeleted}: propsType) => {
                 <span className='absolute inset-0 text-xs font-semibold flex justify-center items-center text-white'>Not Available</span>
               }
             </div>
-            <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-4 flex-1 min-w-0'>
               <div className=''>
                 <h3 className='text- font-semibold'>{item.name}</h3>
                 {
