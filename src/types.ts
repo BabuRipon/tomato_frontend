@@ -41,6 +41,8 @@ export interface IRestaurantTypes {
     };
     isOpen: boolean;
     createdAt: Date;
+    distance?:number | string;
+    distanceKm?: number | string;
 }
 
 export interface IMenuItemTypes {

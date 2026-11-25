@@ -9,6 +9,7 @@ import Navbar from './components/Navbar'
 import Account from "./pages/Account"
 import Restaurant from "./pages/Restaurant"
 import { useApplicationData } from "./context/ApplicationDataContext"
+import RestaurantPage from "./pages/RestaurantPage"
 
 const App = () => {
   const { user } = useApplicationData();
@@ -23,6 +24,7 @@ const App = () => {
       <Routes>
         <Route element={<PrivateRouteComponent />}>
           <Route path='/' element={<Home />} />
+          <Route path='/restaurant/:id' element={<RestaurantPage />} />
           <Route path='/select-role' element={<SelectRoleComponent />} />
           <Route path="/account" element={<Account />} />
           {/* <Route path='*' element={<Navigate to='/' replace />} /> */}

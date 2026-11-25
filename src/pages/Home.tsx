@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import type { IRestaurantTypes } from '../types';
 import axios from 'axios';
 import { config } from '../config/env';
+import RestaurantCard from '../components/RestaurantCard';
 
 const Home = () => {
   const {location} = useApplicationData();
@@ -54,7 +55,31 @@ const Home = () => {
     )
   }
   return (
-    <div>Home</div>
+    <div className='mx-auto max-w-7xl px-4 py-5'>
+      {
+        restaurants.length ? (
+          <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4'>
+            {
+              restaurants.map(res=>{
+
+                return(
+                  <RestaurantCard
+                    key={res._id}
+                    id={res._id}
+                    isOpen={res.isOpen}
+                    name={res.name}
+                    image={res.image ?? ""}
+                    distance={res.distanceKm ?? 'N/A'}
+                  />
+                )
+              })
+            }
+          </div>
+        ): (
+          <p className='text-gray-500 text-center'>No reataurant found</p>
+        )
+      }
+    </div>
   )
 }
 

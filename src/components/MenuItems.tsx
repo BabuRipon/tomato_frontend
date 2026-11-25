@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {type IMenuItemTypes } from '../types.js';
-import { BsCart, BsEye } from 'react-icons/bs';
+import { BsCartPlus, BsEye } from 'react-icons/bs';
 import { FiEyeOff } from 'react-icons/fi';
 import { BiTrash } from 'react-icons/bi';
 import { VscLoading } from 'react-icons/vsc';
@@ -113,7 +113,7 @@ const MenuItems = ({menuItems, isSeller, onItemDeleted}: propsType) => {
                     {
                       isLoading?
                       <VscLoading size={18} className='animate-spin'/> :
-                      <BsCart size={18}/>
+                      <BsCartPlus size={18}/>
                     }
                   </button>
                 }

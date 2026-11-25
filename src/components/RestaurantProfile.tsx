@@ -77,28 +77,25 @@ const RestaurantProfile = ({restaurant, isSeller, setRestaurant}: PropsTypes) =>
             />
         }
         <div className='p-2'>
-            {
-                isSeller && <div className='flex justify-between items-start'>
-                    <div>
-                        {
-                        editMode ? (
-                            <input
-                                value={name}
-                                onChange={e=>setName(e.target.value)}
-                                className='w-full outline-none border px-4 py-2 rounded-lg text-sm'
-                            />
-                            ):
-                            <h1 className='text-xl font-semibold'>{name}</h1>
-                        }
-                        <div className='flex items-center gap-2 text-sm text-gray-500'>
-                            <BiMapPin className='w-4 h-4 mt-0.5 text-red-500'/>
-                            {restaurant.autoLocation.formattedAddress || 'Location unavailable'}
-                        </div>
+            <div className='flex justify-between items-start'>
+                <div>
+                    {
+                    editMode ? (
+                        <input
+                            value={name}
+                            onChange={e=>setName(e.target.value)}
+                            className='w-full outline-none border px-4 py-2 rounded-lg text-sm'
+                        />
+                        ):
+                        <h1 className='text-xl font-semibold'>{name}</h1>
+                    }
+                    <div className='flex items-center gap-2 text-sm text-gray-500'>
+                        <BiMapPin className='w-4 h-4 mt-0.5 text-red-500'/>
+                        {restaurant.autoLocation.formattedAddress || 'Location unavailable'}
                     </div>
-                    <button className='cursor-pointer' onClick={()=>setEditMode(!editMode)}><BiEdit className='w-4 h-4'/></button>
                 </div>
-            }
-
+                {isSeller && <button className='cursor-pointer' onClick={()=>setEditMode(!editMode)}><BiEdit className='w-4 h-4'/></button>}
+            </div>
             {
                 editMode ? 
                 <textarea
